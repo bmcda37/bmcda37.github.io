@@ -1,15 +1,28 @@
 ---
 title: "PAMdemic: How Plague Infects Linux Logins"
-date: 2025-10-25 07:48:00
+date: 2025-10-25 07:48:00 +0000
 categories: [Writeups, Malware]
-tags: [malware]
+tags: [malware, linux, pam, backdoor]
+description: "Analysis of Plague, a PAM-based Linux backdoor enabling stealthy SSH access and persistent authentication bypass."
 ---
 
-###Backgroud
-‘Plague’ represents a newly identified Linux backdoor that has quietly evaded detection by traditional antivirus solutions for over a year. Its primary mechanism involves operating as a malicious PAM, allowing attackers to silently bypass system authentication and establish persistent SSH access to compromised Linux systems.
+## Background
 
+**Plague** represents a newly identified **Linux backdoor** that has quietly evaded detection by traditional antivirus solutions for **over a year**.  
+Its primary mechanism involves operating as a **malicious PAM (Pluggable Authentication Module)**, allowing attackers to silently bypass system authentication and establish persistent SSH access to compromised Linux systems.
 
-- Plague’s initial infection vector remains unknown. However, during deployment, the malware drops a binary that is configured to run as a PAM module for sshd.
-- This module provides an SSH backdoor, enabling threat actors to log in to the infected machine while bypassing standard authentication mechanisms.
-- Because it operates within the core of Linux authentication, the malware can persist through application updates and security patches.
+---
 
+### Infection
+
+- Plague’s initial infection vector remains **unknown**.  
+  However, during deployment, the malware drops a **binary** configured to run as a **PAM module for `sshd`**.
+- This module provides an **SSH backdoor**, enabling threat actors to log in to the infected machine **without standard authentication**.
+- Because it operates within the **core of Linux authentication**, the malware can **persist through application updates and security patches**.
+
+---
+
+### Summary
+
+Plague’s deep integration with PAM makes it particularly stealthy and durable.  
+Its ability to bypass authentication and persist across updates highlights the importance of **PAM auditing** and **system integrity monitoring** in Linux environments.
