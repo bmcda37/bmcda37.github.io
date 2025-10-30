@@ -4,7 +4,7 @@ date: 2025-10-25 07:48:00
 categories: [Writeups, Malware]
 tags: [malware]
 ---
-Backgroud
+###Backgroud
 ‘Plague’ represents a newly identified Linux backdoor that has quietly evaded detection by traditional antivirus solutions for over a year. Its primary mechanism involves operating as a malicious PAM, allowing attackers to silently bypass system authentication and establish persistent SSH access to compromised Linux systems.
 
 - Plague’s initial infection vector remains unknown. However, during deployment, the malware drops a binary that is configured to run as a PAM module for sshd.
