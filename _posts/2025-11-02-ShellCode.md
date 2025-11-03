@@ -1,5 +1,5 @@
 ---
-title: "Shellcode Snippets: From Bytes to Bash"
+title: "Shellcoding Like Van Gogh: From Bytes to Bash"
 date: 2025-11-02 15:10:00 +0000
 categories: [Writeups, Binex]
 tags: [binex, shellcode, syscalls]
