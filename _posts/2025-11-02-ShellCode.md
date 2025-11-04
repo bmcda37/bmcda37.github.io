@@ -10,9 +10,10 @@ Spawning a shell from user input is a strange thrill for beginner exploit develo
 
 Writing shellcode feels less like sudden inspiration and more like careful problem-solving. You are constantly working inside tight constraints: limited bytes, no libraries, direct syscalls, forcing us to be creative in our design choices: which registers to use, how to build arguments on the stack, and how to keep the payload small and reliable.
 
-While learning to craft shellcode, I sometimes compare the process to artists' work, not because I'm creating a masterpiece, but because both require iteration, restraint, and a willingness to try a creative approach until something functional emerges. Jokingly, my shellcode is more Dürer’s Head of a Bearded Child than da Vinci’s Mona Lisa. In this post, I’ll walk through a few examples so that maybe your shellcode is a little less Bearded Child and more Mona Lisa... I hope!
+While learning to craft shellcode, I sometimes compare the process to an artist's work, not because I'm creating a masterpiece, but because both require iteration, restraint, and a willingness to try a creative approach until something functional emerges. Jokingly, my shellcode experience feels more like Dürer’s Head of a Bearded Child than da Vinci’s Mona Lisa. In this post, I’ll walk through a few examples so that maybe your shellcoding experience is a little less Bearded Child and more Mona Lisa... I hope!
 
 [Dürer’s Head of a Bearded Child](https://www.google.com/url?sa=i&url=https%3A%2F%2Farthive.com%2Falbrechtdurer%2Fworks%2F3581~Head_of_a_bearded_baby&psig=AOvVaw0rRWW8YmVVuTBIeOEyOyT7&ust=1762314169005000&source=images&cd=vfe&opi=89978449&ved=0CBYQjRxqFwoTCLC62oTK15ADFQAAAAAdAAAAABAE)
+<br>
 [Da Vinci's Mona Lisa](https://www.google.com/imgres?q=da%20vinci%20mona%20lisa&imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fe%2Fec%2FMona_Lisa%252C_by_Leonardo_da_Vinci%252C_from_C2RMF_retouched.jpg%2F960px-Mona_Lisa%252C_by_Leonardo_da_Vinci%252C_from_C2RMF_retouched.jpg&imgrefurl=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FMona_Lisa&docid=8jbQaPwdqfR2tM&tbnid=fkcKujE8Il9mnM&vet=12ahUKEwjdu5ClyteQAxVZQjABHW9aGOAQM3oECBcQAA..i&w=960&h=1431&hcb=2&ved=2ahUKEwjdu5ClyteQAxVZQjABHW9aGOAQM3oECBcQAA)
 
 ## Usage
