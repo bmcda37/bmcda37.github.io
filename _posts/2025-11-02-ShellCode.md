@@ -147,7 +147,7 @@ Python Escaped:
 0x7fffffffedb0: 0x00    0x00    0x00    0x00    0x00    0x00    0x00    0x00
 ```
 
-##Conclusion
+## Conclusion
 Shellcoding is a craft learned by repetition. Early on, you’ll run into small, stubborn nuances that keep a payload from running. This is part of the process! For me, the point isn’t just “getting a shell”; it’s learning how programs really work at a low level. Anyone can stuff a buffer with A’s and pass a simple crackme, but few take the time to understand register choice, calling conventions, and the subtle tricks that make compact payloads robust. This will pay dividends in your binary exploitation journey!
 
 I challenge you to get your hands dirty: write intentionally vulnerable C programs, test your shellcode against them, and use free training resources like pwn.college and ost2 training to advance your skill-set. When your first attempts look more like Dürer’s Head of a Bearded Child than a Mona Lisa, don’t quit. Keep modifying your code, making choices until you turn bytes into something that works.
@@ -163,6 +163,8 @@ x64	| rax	| rax	| rdi	| rsi	| rdx |	r10 |	r8	| r9 |
 
 > [!TIP] 
 > [Helpful Syscall Calling Conventions Resource](https://syscall.sh/)
+> [Helpful x86 Syscall Resource](https://x86.syscall.sh/)
+> [Helpful x64 Syscall Resource](https://x64.syscall.sh/)
 
 #### Using pwntools
 ```
