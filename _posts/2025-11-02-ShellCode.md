@@ -161,11 +161,10 @@ I challenge you to get your hands dirty: write intentionally vulnerable C progra
 x86 | eax | eax | ebx | ecx | edx | esi | edi | ebp |
 x64	| rax	| rax	| rdi	| rsi	| rdx |	r10 |	r8	| r9 |
 
-> [!TIP] 
 > [Helpful Syscall Calling Conventions Resource](https://syscall.sh/)
 > [Helpful x86 Syscall Resource](https://x86.syscall.sh/)
 > [Helpful x64 Syscall Resource](https://x64.syscall.sh/)
-
+{: .prompt-tip }
 #### Using pwntools
 ```
 #! /usr/bin/env python3
@@ -182,12 +181,12 @@ print(disasm(my_sc_bytes))
 
 ```
 #### More Manual Approach to Create Shellcode
-> [!TIP] 
 > Assemble the object code ```gcc -nostdlib -static -o shellcode-elf shellcode.s ```
 > <br>
 > Pull out only the shellcode ```objcopy --dump-section .text=shellcode shellcode-elf ```
 > <br>
 > To view the shellcode, use hexdump.
+{: .prompt-tip }
 
 #### Boiler Plate Template
 ```
