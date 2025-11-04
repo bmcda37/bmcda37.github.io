@@ -161,9 +161,9 @@ I challenge you to get your hands dirty: write intentionally vulnerable C progra
 x86 | eax | eax | ebx | ecx | edx | esi | edi | ebp |
 x64	| rax	| rax	| rdi	| rsi	| rdx |	r10 |	r8	| r9 |
 
-> [Helpful Syscall Calling Conventions Resource](https://syscall.sh/)
-> [Helpful x86 Syscall Resource](https://x86.syscall.sh/)
-> [Helpful x64 Syscall Resource](https://x64.syscall.sh/)
+> [Helpful Syscall Calling Conventions Resource](https://syscall.sh/)<br>
+> [Helpful x86 Syscall Resource](https://x86.syscall.sh/)<br>
+> [Helpful x64 Syscall Resource](https://x64.syscall.sh/)<br>
 {: .prompt-tip }
 #### Using pwntools
 ```
@@ -199,6 +199,14 @@ _start:
 ```
 
 #### Links
+[Corelan Exploit Writing Blog Series](https://www.corelan.be/index.php/2009/07/19/exploit-writing-tutorial-part-1-stack-based-overflows/)
 [Shellcode/NullFree](https://nets.ec/Shellcode/Null-free) 
 <br>
 [pwn.college Shellcode Module](https://pwn.college/dojo/program-security)
+<br>
+[Helpful Syscall Calling Conventions Resource](https://syscall.sh/)
+<br>
+[Helpful x86 Syscall Resource](https://x86.syscall.sh/)
+<br>
+[Helpful x64 Syscall Resource](https://x64.syscall.sh/)
+<br>
