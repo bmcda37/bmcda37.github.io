@@ -1,6 +1,5 @@
-
 ---
-title: "Buffer Overflows: OSED Exam Practice"
+title: "CVE-2017-14980 Proof of Concept- OSED Exam Practice"
 date: 2026-1-10 15:10:00 +0000
 categories: [OSED_Prep, Binex]
 tags: [binex, osed]
