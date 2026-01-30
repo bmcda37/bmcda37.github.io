@@ -144,7 +144,7 @@ Once the function is understood, generating valid OTPs becomes trivial.
 
 ---
 
-# Reconstructing the Algorithm in Python
+### Reconstructing the Algorithm in Python
 
 The Python script mirrors the assembly **instruction for instruction**, including:
 
@@ -158,6 +158,7 @@ Running the script in **demo mode** confirms that the generated OTP matches the 
 PIN and OTP match: True`
 
 Switching to **current time** demonstrates how easily OTPs can be generated dynamically for any valid timestamp.
+
 ---
 
 ## My Python code
