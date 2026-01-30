@@ -5,10 +5,26 @@ categories: [Reversing]
 tags: [reversing]
 description: "Reversing | Cracking OTP Generator which utilizes the current timestamp and bitwise operations."
 ---
+![Reversing a OTP](../_data/Reversing-OTP.png)
+
 
 # Introduction
+Recently, as I've been studying for one of my Binex/Reversing certifications, I've concluded: when it comes to reversing code, you will most certainly face challenges. Even simply following the flow of a program in assembly language can be difficult, sometimes requiring hours of breaking down the logic of functions at the most minute level. On top of that, trying to reconstruct the original code’s logic at a higher level of abstraction, translating it back into a more human-readable form, can be even more daunting and, at times, head-smashing.
 
-# Assembly Code Review
+I’ve found that the most effective way to approach reverse engineering, especially when dealing with encryption or obfuscation, is to break down each function into smaller, manageable steps systematically. By segmenting the problem, you can maintain clarity and avoid getting overwhelmed by the complexity of the assembly instructions or the algorithm. When breaking down a function, I typically follow the steps:
+
+**Uncover Very Clever Bits Gradually**
+<br><sub> _I developed the process; however, ChatGPT came up with the Mnemonic!!_ </sub><br>
+<br> U → Understand the function
+<br> V → Values passed in
+<br> C → Constants
+<br> B → Break down algorithm
+<br> G → Generate pseudo code
+<br>
+
+
+# Assembly Code Used for OTP Generation
+The code we will be walking through is shown below; however, it is only a small portion of a larger challenge, which makes sharing the program in its entirety impractical.
 ```
 Function generate_OTP ; 1 xref
 0x400f28:  push    rbp
@@ -56,9 +72,94 @@ Function generate_OTP ; 1 xref
 0x400f9e:  retn    
 ```
 
+# Breaking Down the Assembly Logic
 
+With the mnemonic in mind, we can now walk through the _**generate_OTP**_ function step by step and map the low-level assembly instructions to higher-level logic.
 
-# Using Python to obtain the OTP
+### High-Level Function Behavior
+
+At a high level, this function:
+
+- Pulls the current Unix timestamp from a session structure
+- Iterates eight times
+- In each iteration:
+  - Performs bit shifts on a constant
+  - XORs the result with the timestamp
+  - Uses multiplication and shifts to compute a remainder
+  - Converts the result into an ASCII digit
+- Writes each digit into a buffer
+- Produces an 8-digit OTP
+
+This immediately tells us the OTP is **deterministic** and **time-based**, not cryptographically random.
+
+---
+
+### Identifying Inputs and Constants
+
+From the assembly:
+
+- **Input buffer** is passed via `rdi` and stored at `[rbp-0x18]`
+- **Timestamp** is loaded from `current_session + 0x30`
+- **Constants used**:
+  - `0x3059b9c1`
+  - `0x38e38e39`
+
+These constants are strong indicators of a custom arithmetic routine rather than a standard crypto primitive.
+
+---
+
+### The Loop Structure
+
+The loop runs while: i <= 7
+This results in **8 iterations**, producing an 8-character OTP.
+
+Inside the loop:
+
+1. The loop index is doubled (`i * 2`)
+2. `0x3059b9c1` is arithmetic-shifted right by that value
+3. Only the **lowest byte (`al`)** of the result is used
+4. That byte is XORed with the timestamp
+5. A signed multiply with `0x38e38e39` occurs
+6. Bit shifts and subtraction reconstruct a quotient
+7. The remainder is calculated
+8. `0x31` is added to map the value into ASCII digit range
+9. The byte is written to the OTP buffer
+
+This sequence effectively computes: `(time ^ shifted_constant) % 10`
+…but implemented in a deliberately opaque way.
+
+---
+
+### Why This Isn’t Secure
+
+Although the code looks complex, it provides no real cryptographic security:
+
+- The timestamp is predictable
+- The constants are static
+- No secret key is involved
+- The algorithm is fully reversible
+- The output space is limited to numeric characters
+
+Once the function is understood, generating valid OTPs becomes trivial.
+
+---
+
+# Reconstructing the Algorithm in Python
+
+The Python script mirrors the assembly **instruction for instruction**, including:
+
+- Signed arithmetic right shifts (`sar32`)
+- Manual extraction of register-sized values
+- Reconstruction of `imul` behavior
+- Explicit remainder calculation
+
+Running the script in **demo mode** confirms that the generated OTP matches the value observed during debugging:
+`OTP PIN is 34553314
+PIN and OTP match: True`
+
+Switching to **current time** demonstrates how easily OTPs can be generated dynamically for any valid timestamp.
+---
+
 ## My Python code
 ```
 import datetime
@@ -150,3 +251,12 @@ if __name__ == "__main__":
         print("Run script again with valid input")
 
 ```
+
+# Conclusion
+
+Throughout this reverse engineering challenge, I grew my skills and understanding of bitwise operations while gaining confidence in assembly code flow. By doing these challenges, I am forced to think outside the box and examine potential vulnerabilities within programs, formulating part of an exploit that can then be chained together with other techniques until the program has been pwned. Throughout this challenge, I came to the following conclusions:
+
+1. **Systematic analysis is key** – Using a structured approach, like the **Uncover Very Clever Bits Gradually (UVCBG)** mnemonic, makes complex assembly much more manageable and less scary.
+2. **Understand before translating** – High-level understanding of inputs, constants, and loops helps avoid getting lost in low-level instructions.
+3. **Cryptography requires real secrets** – Deterministic, public-timestamp-based algorithms offer little real security.
+
