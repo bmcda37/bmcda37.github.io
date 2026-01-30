@@ -11,20 +11,20 @@ My name is Ben McDaniel.
 - CNO Developer
 - Vulnerability Researcher
 - Malware Analyst
-- Other Related Roles
+- Offensive Tool Development
 
 ### Certifications/Courses (Completed)
-- SANS GIAC GICSP -> ICS/OT Security Principles -> Advisory Board
+- SANS GIAC GRID -> ICS/OT Incident Response, Cyber-Threat Intelligence, & Active Defense 
+- SANS GIAC GICSP -> ICS/OT Security Principles
 - Low-Level Academy -> C Programming Fundamentals
 - Pwn.College -> Program Security
 
   
 ### Certifications (In-Progress <sub>Enrolled In</sub> )
-- Ret2 WarGames -> Software Exploitation (Dec '25)
-- SANS GIAC GRID -> ICS/OT Incident Response & Detection (Dec '25)
+- Ret2 WarGames -> Software Exploitation (Feb '26)
 - MalDev Academy -> Malware Development (Ongoing)
-- Offsec OSED -> Windows User Exploitation (Feb '26)
-- Windows Master Developer (March '26)
+- Offsec OSED -> Windows User Exploitation (June '26)
+- Windows Master Developer (July '26)
 
 ### Topics of Interest
 - Reverse Engineering, Binary/Software Exploitation, and Systems Programming.
