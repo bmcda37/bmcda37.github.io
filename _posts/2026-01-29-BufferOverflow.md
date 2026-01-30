@@ -1,6 +1,6 @@
 ---
 title: "CVE-2017-14980 Proof of Concept"
-date: 2026-1-10 15:10:00 +0000
+date: 2026-1-29 15:10:00 +0000
 categories: [OSED_Prep, Binex]
 tags: [binex, osed]
 description: "CVE-2017-14980 | Sync Breeze Application"
